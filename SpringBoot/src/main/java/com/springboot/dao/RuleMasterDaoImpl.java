@@ -1,5 +1,7 @@
 package com.springboot.dao;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,6 +19,12 @@ public class RuleMasterDaoImpl implements RuleMasterDao {
 	
 	public void save(RuleMaster ruleMasterObj) {
 		sessionFactory.getCurrentSession().save(ruleMasterObj);
+	}
+
+
+	public List<RuleMaster> list() {
+		List<RuleMaster> ruleMasterObjList = sessionFactory.getCurrentSession().createCriteria(RuleMaster.class).list();
+		return ruleMasterObjList;
 	}
 
 }
