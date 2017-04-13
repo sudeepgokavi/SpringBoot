@@ -8,67 +8,98 @@
 	angular.module('configureRuleApp', []).controller(
 			'configureRuleController', function($scope, $http, $window) {
 
-				$scope.ruleNamesArr = [ {
-					ruleName : "Sonar"
-				}, {
-					ruleName : "Defect"
-				}, {
-					ruleName : "Issue"
-				}, {
-					ruleName : "Other"
-				}, ];
+				$scope.ruleID= "<%= session.getAttribute("ruleID")%>";
+				$scope.ruleMasterObj;
+				$scope.ruleMasterId =$scope.ruleID; 
+				//alert($scope.ruleID);
+				if($scope.ruleID != "null"){
+					//alert("Modify");
+					$http({
+						method: "GET",
+						url : "/rules/ruleDetails/"+$scope.ruleID
+					}).success(function(response){
+						//alert(response);
+						$scope.ruleMasterObj = response;
+						//alert($scope.ruleMasterObj.ruleStatus);
+						$scope.ruleMasterId = $scope.ruleMasterObj.id;
+						$scope.ruleNames = $scope.ruleMasterObj.ruleName;
+						$scope.ruleTypes = $scope.ruleMasterObj.ruleType;
+		            	$scope.rulePoints = $scope.ruleMasterObj.rulePoints;
+		            	$scope.ruleDesc = $scope.ruleMasterObj.ruleDesc;
+		            	$scope.rulePriorities = $scope.ruleMasterObj.rulePriority;
+		            	$scope.ruleStatus = $scope.ruleMasterObj.ruleStatus;
 
-				$scope.ruleTypesArr = [ {
-					ruleType : "Voilation"
-				}, {
-					ruleType : "Fix"
-				}, {
-					ruleType : "Code Fix"
-				}, {
-					ruleType : "Other"
-				}, ];
+					}).error(function(err){
+						alert("err indicative");
+					}); 
+					
+				}
+				else{
+					//alert("New");
+				}
+				
+				$http({
+					method: "GET",
+					url : "/rules/allRuleDetails",
+					params: {
+						colName : "ruleName"
+					}					
+				}).success(function(response){
+					$scope.ruleNamesArr = response;
+				}).error(function(err){
+					alert("err indicative");
+				}); 
+				
+				$http({
+					method: "GET",
+					url : "/rules/allRuleDetails",
+					params: {
+						colName : "ruleType"
+					}					
+				}).success(function(response){
+					$scope.ruleTypesArr = response;
+				}).error(function(err){
+					alert("err indicative");
+				}); 
+				
+				$scope.rulePrioritiesArr = [ "Blocker", "Critical", "High", "Medium"];
 
-				$scope.rulePrioritiesArr = [ {
-					rulePriority : "Blocker"
-				}, {
-					rulePriority : "Critical"
-				}, {
-					rulePriority : "High"
-				}, {
-					rulePriority : "Medium"
-				}, ];
-
-				$scope.ruleStatusArr = [ {
-					ruleStatus : "Active"
-				}, {
-					ruleStatus : "In-Active"
-				}, ];
+				$scope.ruleStatusArr = [ "Active" , "In-Active"];
 				
 				
 	            $scope.addRule = function () {
 	            	var ruleNameVal, ruleTypeVal, rulePriorityVal, rulePointsVal, ruleStatusVal, ruleDesc;
+	            	var url;
 	            	
+	            	ruleIdVal = $scope.ruleMasterId;
+	            	//alert(ruleIdVal);
 	            	rulePointsVal = $scope.rulePoints;
 	            	ruleDesc = $scope.ruleDesc;
-	            	rulePriorityVal = $scope.rulePriorities.rulePriority;
-	            	ruleStatusVal = $scope.ruleStatus.ruleStatus;
+	            	rulePriorityVal = $scope.rulePriorities;
+	            	ruleStatusVal = $scope.ruleStatus;
 	            	
-	            	if($scope.ruleNames.ruleName == "Other"){
+	            	if($scope.ruleNames == "Other"){
 	            		ruleNameVal = document.getElementById("ruleNameOther").value;
 	            	}else{
-	            		ruleNameVal = $scope.ruleNames.ruleName;
+	            		ruleNameVal = $scope.ruleNames;
 	            	}
 	            	
-	            	if($scope.ruleTypes.ruleType == "Other"){
+	            	if($scope.ruleTypes == "Other"){
 	            		ruleTypeVal = document.getElementById("ruleTypeOther").value;
 	            	}else{
-	            		ruleTypeVal = $scope.ruleTypes.ruleType;
+	            		ruleTypeVal = $scope.ruleTypes;
 	            	}
-	            	
+
+	            	if(ruleIdVal == "null"){
+	            		url = "addRule";
+	            	}else{
+	            		url = "updateRule";
+	            	}
 					$http({
 						method: "GET",
-						url : "addRule",
+						url : url,
 						params: {
+							ruleId : ruleIdVal,
 							ruleName : ruleNameVal,
 							ruleType : ruleTypeVal,
 							rulePriority : rulePriorityVal,
@@ -97,27 +128,28 @@
 		configure the existing rules.
 	<div ng-app="configureRuleApp" ng-controller="configureRuleController"
 		class="w3-container">
+		<input type="hidden1" ng-model="ruleMasterId" value="new">
 		<table>
 			<tr>
 				<td>Rule Name:</td>
 				<td><select ng-model="ruleNames"
-					ng-options="option.ruleName for option in ruleNamesArr">
+					ng-options="option for option in ruleNamesArr">
 						<option value="">-- Select Rule--</option>
-				</select> <input ng-if="ruleNames.ruleName == 'Other'" type="text"
+				</select> <input ng-if="ruleNames == 'Other'" type="text"
 					ng-model="ruleNameOther" id="ruleNameOther" value=""></td>
 			</tr>
 			<tr>
 				<td>Rule Type:</td>
 				<td><select ng-model="ruleTypes"
-					ng-options="option.ruleType for option in ruleTypesArr">
+					ng-options="option for option in ruleTypesArr">
 						<option value="">-- Select Type--</option>
-				</select> <input ng-if="ruleTypes.ruleType == 'Other'" type="text"
+				</select> <input ng-if="ruleTypes == 'Other'" type="text"
 					ng-model="ruleTypeOther" id="ruleTypeOther"></td>
 			</tr>
 			<tr>
 				<td>Rule Priority:</td>
 				<td><select ng-model="rulePriorities"
-					ng-options="option.rulePriority for option in rulePrioritiesArr">
+					ng-options="option for option in rulePrioritiesArr">
 						<option value="">-- Select Priority--</option>
 				</select></td>
 
@@ -130,7 +162,7 @@
 			<tr>
 				<td>Rule Status:</td>
 				<td><select ng-model="ruleStatus"
-					ng-options="option.ruleStatus for option in ruleStatusArr">
+					ng-options="option for option in ruleStatusArr">
 						<option value="">-- Select Status--</option>
 				</select></td>
 			</tr>
