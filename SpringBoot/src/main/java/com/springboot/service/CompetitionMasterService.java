@@ -18,7 +18,7 @@ public class CompetitionMasterService {
 	}
 
 	public void update(CompetitionMaster compititionMasterObj){
-		this.competitionMasterDao.save(compititionMasterObj);
+		this.competitionMasterDao.update(compititionMasterObj);
 	}
 	
 	public void delete(CompetitionMaster compititionMasterObj){

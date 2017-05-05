@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class CompetitionMasterController {
 
 	@RequestMapping("/configureCompetition")
 	public String configureCompetition(Model model, HttpServletRequest request) {
+
 		return "configureCompetition";
 	}
 
@@ -44,10 +46,9 @@ public class CompetitionMasterController {
 		return "configureCompetition";
 	}
 
-	
 	@RequestMapping("/add")
 	public String addCompetition(HttpServletRequest request) throws ParseException {
-		System.out.println("CompetitionMasterController.addCompetition()");
+		// System.out.println("CompetitionMasterController.addCompetition()");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MMM-yyyy");
 
 		CompetitionMaster competitionMasterObj = new CompetitionMaster();
@@ -76,19 +77,21 @@ public class CompetitionMasterController {
 	}
 
 	@RequestMapping("/update")
+	// @RequestMapping(method = RequestMethod.PUT, value="/update")
 	public String updateCompetition(HttpServletRequest request) throws ParseException {
-		
-		String competitionId = request.getParameter("competitionId");
-		//System.out.println(" -------- > " + ruleId);
+
+		String competitionId = request.getParameter("competitionMasterId");
+		//System.out.println(" -------- > " + competitionId);
 		CompetitionMaster competitionMasterObj = null;
 		if (competitionId != "" || competitionId != null || competitionId != "null") {
-			competitionMasterObj = this.competitionMasterService.getCompititionMasterDetails(Integer.parseInt(competitionId));
+			competitionMasterObj = this.competitionMasterService
+					.getCompititionMasterDetails(Integer.parseInt(competitionId));
 		}
-		
-		System.out.println("CompetitionMasterController.SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS()");
+
+		// System.out.println("CompetitionMasterController.SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS()");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MMM-yyyy");
 
-		//CompetitionMaster competitionMasterObj = new CompetitionMaster();
+		// CompetitionMaster competitionMasterObj = new CompetitionMaster();
 		competitionMasterObj.setCompetitionDetails(request.getParameter("competitionDetails"));
 
 		String endDate = request.getParameter("competitionEndDate");
@@ -109,34 +112,31 @@ public class CompetitionMasterController {
 		competitionMasterObj.setCompetitionStatus(request.getParameter("competitionStatus"));
 
 		this.competitionMasterService.update(competitionMasterObj);
-
+		request.getSession().removeAttribute("competitionId");
 		return "competitionSummary";
 	}
 
-	
 	@RequestMapping("/all")
-	public @ResponseBody List<CompetitionMaster> getAllCompetitions(Model model) {
-		System.out.println("CompetitionMasterController.getAllCompetitions()");
+	public @ResponseBody List<CompetitionMaster> getAllCompetitions() {
 		List<CompetitionMaster> listObj = this.competitionMasterService.list();
-		// model.addAttribute("listRulesObj", listObj);
-		System.out.println(listObj.size() + " --------------------------------------------");
 		return listObj;
 	}
-	
+
 	@RequestMapping(value = "/details/{competitionId}", method = RequestMethod.GET)
 	public @ResponseBody CompetitionMaster getCompetitionDetails(@PathVariable("competitionId") int competitionId) {
-		System.out.println(" ------------------------ ? " + competitionId);
-		CompetitionMaster competitionMasterObj = this.competitionMasterService.getCompititionMasterDetails(competitionId);
+		//System.out.println(" ------------------------ ? " + competitionId);
+		CompetitionMaster competitionMasterObj = this.competitionMasterService
+				.getCompititionMasterDetails(competitionId);
 		return competitionMasterObj;
 	}
 
 	@RequestMapping(value = "/delete/{competitionId}", method = RequestMethod.GET)
 	public String deleteCompetition(@PathVariable("competitionId") int competitionId) {
-		CompetitionMaster competitionMasterObj = this.competitionMasterService.getCompititionMasterDetails(competitionId);
-		if(competitionMasterObj != null)
+		CompetitionMaster competitionMasterObj = this.competitionMasterService
+				.getCompititionMasterDetails(competitionId);
+		if (competitionMasterObj != null)
 			this.competitionMasterService.delete(competitionMasterObj);
 		return "competitionSummary";
 	}
 
-	
 }

@@ -29,7 +29,7 @@ angular.module('competitionSummary', [])
     
     
     $scope.configureRule = function (competitionId) {
-    	alert(competitionId);
+    	//alert(competitionId);
 		$http({
 			method: "GET",
 			url : "viewCompetitionDetails",
@@ -56,7 +56,11 @@ angular.module('competitionSummary', [])
 			alert("err indicative");
 		}); 
     };
-    
+
+    $scope.addNewComp= function () {
+		$window.location.href = '/competition/configureCompetition'; 
+    };
+
 });
 </script>
 <meta charset="ISO-8859-1"></meta>
@@ -66,7 +70,12 @@ angular.module('competitionSummary', [])
 	<div ng-controller="competitionSummaryCtr">
 <p>
 Competition Summary Page
+<br>
+<button ng-click="addNewComp()">New Competition </button>
 </p>
+
+
+ 
 <table class="w3-table w3-striped">
 			<th>ID</th>
 			<th>Competition Name</th>
@@ -85,8 +94,8 @@ Competition Summary Page
 				<td>{{ x.competitionDetails}}</td>
 				<td>{{ x.competitionRules}}</td>
 				<td>{{ x.competitionStatus}}</td>
-				<td>{{ x.competitionStartDate}}</td>
-				<td>{{ x.competitionEndDate}}</td>
+				<td>{{ x.competitionStartDate | date : 'dd-MMM-yyyy'}}</td>
+				<td>{{ x.competitionEndDate | date : 'dd-MMM-yyyy'}}</td>
 				<td>{{ x.competitionPoints}}</td>
 				<td>{{ x.competitionPrize}}</td>
 				<td>{{ x.competitionOwner}}</td>
