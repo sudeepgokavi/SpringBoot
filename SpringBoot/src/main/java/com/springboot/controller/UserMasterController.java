@@ -66,7 +66,7 @@ public class UserMasterController {
 		return "userSummary";
 	}
 
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
 	public String addUser(HttpServletRequest request) throws Exception {
 		 System.out.println("CompetitionMasterController.addCompetition()" + request.getParameter("userCountry"));
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MMM-yyyy");
@@ -97,9 +97,9 @@ public class UserMasterController {
 		return "userSummary";
 	}
 	
-	@RequestMapping(value = "/update", method = RequestMethod.PUT)
-	public String updateUser(HttpServletRequest request) throws Exception {
-		// System.out.println("CompetitionMasterController.addCompetition()");
+	@RequestMapping("/updateUser")
+	public String updateUser(Model model,HttpServletRequest request) throws Exception {
+		System.out.println("CompetitionMasterController.addCompetition()");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MMM-yyyy");
 		UserMaster userMasterObj = this.userMasterService.getUserDetails(Integer.parseInt(request.getParameter("userMasterId")));
 		
@@ -125,7 +125,7 @@ public class UserMasterController {
 		userMasterObj.setUserDOB(sqlDOB);
 		
 		this.userMasterService.update(userMasterObj);
-		
+		request.getSession().removeAttribute("userId");	
 		return "userSummary";
 	}
 	

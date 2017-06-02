@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springboot.model.CompetitionMaster;
 import com.springboot.model.RuleMaster;
+import com.springboot.model.UserMaster;
 import com.springboot.service.CompetitionMasterService;
+import com.springboot.service.UserMasterService;
 
 @Controller
 @RequestMapping("/competition")
@@ -28,10 +30,17 @@ public class CompetitionMasterController {
 	@Autowired
 	private CompetitionMasterService competitionMasterService;
 
+	@Autowired
+	private UserMasterService userMasterService;
+
 	@RequestMapping("/configureCompetition")
 	public String configureCompetition(Model model, HttpServletRequest request) {
-
 		return "configureCompetition";
+	}
+
+	@RequestMapping("/viewCompetition")
+	public String viewCompetition(Model model, HttpServletRequest request) {
+		return "viewCompetition";
 	}
 
 	@RequestMapping("/competitionSummary")
@@ -48,6 +57,9 @@ public class CompetitionMasterController {
 
 	@RequestMapping("/add")
 	public String addCompetition(HttpServletRequest request) throws ParseException {
+		//Getting User
+		UserMaster userMasterObj = this.userMasterService.getUserDetails(1);
+
 		// System.out.println("CompetitionMasterController.addCompetition()");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -71,6 +83,10 @@ public class CompetitionMasterController {
 		competitionMasterObj.setCompetitionStartDate(sqlStartDate);
 		competitionMasterObj.setCompetitionStatus(request.getParameter("competitionStatus"));
 
+		competitionMasterObj.setCompContactPhone(request.getParameter("compContactPhone"));
+		competitionMasterObj.setCompContactEmail(request.getParameter("compContactEmail"));
+		competitionMasterObj.setUserId(userMasterObj);
+		
 		this.competitionMasterService.save(competitionMasterObj);
 
 		return "competitionSummary";
@@ -80,6 +96,10 @@ public class CompetitionMasterController {
 	// @RequestMapping(method = RequestMethod.PUT, value="/update")
 	public String updateCompetition(HttpServletRequest request) throws ParseException {
 
+		//Getting User
+		UserMaster userMasterObj = this.userMasterService.getUserDetails(1);
+
+		
 		String competitionId = request.getParameter("competitionMasterId");
 		//System.out.println(" -------- > " + competitionId);
 		CompetitionMaster competitionMasterObj = null;
@@ -110,6 +130,10 @@ public class CompetitionMasterController {
 		java.sql.Date sqlStartDate = new Date(date.getTime());
 		competitionMasterObj.setCompetitionStartDate(sqlStartDate);
 		competitionMasterObj.setCompetitionStatus(request.getParameter("competitionStatus"));
+
+		competitionMasterObj.setCompContactPhone(request.getParameter("compContactPhone"));
+		competitionMasterObj.setCompContactEmail(request.getParameter("compContactEmail"));
+		competitionMasterObj.setUserId(userMasterObj);
 
 		this.competitionMasterService.update(competitionMasterObj);
 		request.getSession().removeAttribute("competitionId");

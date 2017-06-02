@@ -3,9 +3,12 @@ package com.springboot.model;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,28 +29,15 @@ public class CompetitionMaster {
 	private String competitionOwner;
 	private String competitionPrize;
 
+	private String compContactPhone;
+	private String compContactEmail;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="registeredUserId", nullable = false)
+	private UserMaster userId;
+
 	public CompetitionMaster() {
 	}
-
-	
-	
-	public CompetitionMaster(int id, String competitionName, String competitionDetails, String competitionRules,
-			String competitionStatus, int competitionPoints, Date competitionStartDate, Date competitionEndDate,
-			String competitionOwner, String competitionPrize) {
-		super();
-		this.id = id;
-		this.competitionName = competitionName;
-		this.competitionDetails = competitionDetails;
-		this.competitionRules = competitionRules;
-		this.competitionStatus = competitionStatus;
-		this.competitionPoints = competitionPoints;
-		this.competitionStartDate = competitionStartDate;
-		this.competitionEndDate = competitionEndDate;
-		this.competitionOwner = competitionOwner;
-		this.competitionPrize = competitionPrize;
-	}
-
-
 
 	public int getId() {
 		return id;
@@ -127,6 +117,30 @@ public class CompetitionMaster {
 
 	public void setCompetitionPrize(String competitionPrize) {
 		this.competitionPrize = competitionPrize;
+	}
+
+	public String getCompContactPhone() {
+		return compContactPhone;
+	}
+
+	public void setCompContactPhone(String compContactPhone) {
+		this.compContactPhone = compContactPhone;
+	}
+
+	public String getCompContactEmail() {
+		return compContactEmail;
+	}
+
+	public void setCompContactEmail(String compContactEmail) {
+		this.compContactEmail = compContactEmail;
+	}
+
+	public UserMaster getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UserMaster userId) {
+		this.userId = userId;
 	}
 
 }
