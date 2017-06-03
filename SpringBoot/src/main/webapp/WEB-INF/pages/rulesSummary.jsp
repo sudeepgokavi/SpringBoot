@@ -12,11 +12,11 @@ border: 2px solid bisque !important;
 cursor : pointer !important;
 }
 </style>
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-<script type="text/javascript"
-	src="<c:url value="/resources/js/first.js" />"></script>
 
 <script type="text/javascript">
 
@@ -55,36 +55,51 @@ angular.module('rulesSummary', [])
 		}); 
     };
 
+	$scope.addNewRule = function() {
+		$window.location.href = '/rules/configureRule';
+	};
+
 });
 </script>
 <meta charset="ISO-8859-1"></meta>
-<title>Insert title here</title>
+<title>Rules Summary</title>
 </head>
 <body ng-app="rulesSummary">
-	<h1>Welcome</h1>
 	<div ng-controller="rulesSummaryCtr">
-
-<table class="w3-table w3-striped">
-			<th>ID</th>
-			<th>Rule Name</th>
-			<th>Rule Type</th>
-			<th>Rule Priority</th>
-			<th>Rule Points</th>
-			<th>Rule Status</th>
-			<th>Rule Description</th>
-			<th>Action</th>			
-			<tr ng-repeat="x in listRulesObj">
-				<td>{{ x.id }}</td>
-				<td>{{ x.ruleName }}</td>
-				<td>{{ x.ruleType}}</td>
-				<td>{{ x.rulePriority}}</td>
-				<td>{{ x.rulePoints}}</td>
-				<td>{{ x.ruleStatus}}</td>
-				<td>{{ x.ruleDesc}}</td>
-				<td> <button  ng-click="configureRule(x.id)">Configure</button>
-				<button  ng-click="deleteRule(x.id)">Delete</button></td>
-			</tr>
-		</table>
+		<div class="w3-container">
+			<h2>Rules Summary Page</h2>
+			<p>
+				This page will provide the list & details of all the Rules. <br>
+				<button class="w3-button w3-section w3-teal w3-ripple" ng-click="addNewRule()">New Rule</button>
+			</p>
+			<table class="w3-table-all w3-card-4">
+				<thead>
+					<tr class="w3-teal">
+						<th>ID</th>
+						<th>Rule Name</th>
+						<th>Rule Type</th>
+						<th>Rule Priority</th>
+						<th>Rule Points</th>
+						<th>Rule Status</th>
+						<th>Rule Description</th>
+						<th>Action</th>
+					</tr>
+				</thead>			
+				<tr ng-repeat="x in listRulesObj">
+					<td>{{ x.id }}</td>
+					<td>{{ x.ruleName }}</td>
+					<td>{{ x.ruleType}}</td>
+					<td>{{ x.rulePriority}}</td>
+					<td>{{ x.rulePoints}}</td>
+					<td>{{ x.ruleStatus}}</td>
+					<td>{{ x.ruleDesc}}</td>
+					<td>
+						<a href="#" ng-click="configureRule(x.id)"><i class="fa fa-edit" style="font-size:24px;color:blue"></i></a>
+						<a href="#" ng-click="deleteRule(x.id)"><i class="material-icons" style="font-size:24px;color:red">delete_forever</i> </a>
+					</td>
+				</tr>
+			</table>
 		</div>
+	</div>
 </body>
 </html>

@@ -12,11 +12,11 @@ table, th, td {
 	cursor: pointer !important;
 }
 </style>
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-<script type="text/javascript"
-	src="<c:url value="/resources/js/first.js" />"></script>
 
 <script type="text/javascript">
 	angular.module('userSummary', []).controller('userSummaryCtr',
@@ -64,44 +64,46 @@ table, th, td {
 </head>
 <body ng-app="userSummary">
 	<div ng-controller="userSummaryCtr">
-
-		<h2>User Summary Page</h2>
-		<p>
-			This page will provide the list & details of all the Users. <br>
-			<button ng-click="addNewUser()">New User</button>
-		</p>
-
-
-
-		<table class="w3-table w3-striped">
-			<th>ID</th>
-			<th>User Name</th>
-			<th>User Nick Name</th>
-			<th>User Email</th>
-			<th>User Mobile</th>
-			<th>User DOB</th>
-			<th>User Country</th>
-			<th>User Role</th>
-			<th>User Status</th>
-			<th>User Joining Date</th>
-			<th>Action</th>
-			<tr ng-repeat="x in listUserObj">
-				<td>{{ x.id}}</td>
-				<td>{{ x.userName }}</td>
-				<td>{{ x.userNickName}}</td>
-				<td>{{ x.userEmail}}</td>
-				<td>{{ x.userMobile}}</td>
-				<td>{{ x.userDOB | date : 'dd-MMM-yyyy'}}</td>
-				<td>{{ x.userCountry}}</td>
-				<td>{{ x.userRole}}</td>
-				<td>{{ x.userStatus}}</td>
-				<td>{{ x.userJoiningDate | date : 'dd-MMM-yyyy'}}</td>
-				<td>
-					<button ng-click="configureUser(x.id)">Configure</button>
-					<button ng-click="deleteUser(x.id)">Delete</button>
-				</td>
-			</tr>
-		</table>
+		<div class="w3-container">
+			<h2>User Summary Page</h2>
+			<p>
+				This page will provide the list & details of all the Users. <br>
+				<button class="w3-button w3-section w3-teal w3-ripple" ng-click="addNewUser()">New User</button>
+			</p>
+			<table class="w3-table-all w3-card-4">
+				<thead>
+					<tr class="w3-teal">
+						<th>ID</th>
+						<th>User Name</th>
+						<th>User Nick Name</th>
+						<th>User Email</th>
+						<th>User Mobile</th>
+						<th>User DOB</th>
+						<th>User Country</th>
+						<th>User Role</th>
+						<th>User Status</th>
+						<th>User Joining Date</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tr ng-repeat="x in listUserObj">
+					<td>{{ x.id}}</td>
+					<td>{{ x.userName }}</td>
+					<td>{{ x.userNickName}}</td>
+					<td>{{ x.userEmail}}</td>
+					<td>{{ x.userMobile}}</td>
+					<td>{{ x.userDOB | date : 'dd-MMM-yyyy'}}</td>
+					<td>{{ x.userCountry}}</td>
+					<td>{{ x.userRole}}</td>
+					<td>{{ x.userStatus}}</td>
+					<td>{{ x.userJoiningDate | date : 'dd-MMM-yyyy'}}</td>
+					<td>
+						<a href="#" ng-click="configureUser(x.id)"><i class="fa fa-edit" style="font-size:24px;color:blue"></i></a>
+						<a href="#" ng-click="deleteUser(x.id)"><i class="material-icons" style="font-size:24px;color:red">delete_forever</i> </a>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </body>
 </html>

@@ -45,7 +45,7 @@ angular.module('viewCompetition', []).controller(
 		Detailed view of the Competition.<br>
 		<a href="competitionSummary"> Competition Summary</a>
 	</p>
-	<div class="w3-container w3-half w3-margin-top">
+	<div class="w3-container w3-full w3-margin-top">
 		<form class="w3-container w3-card-4">
 
 			<div ng-app="viewCompetition"
@@ -96,6 +96,11 @@ angular.module('viewCompetition', []).controller(
 					<tr>
 						<td>Status:</td>
 						<td>{{competitionMasterObj.competitionStatus}}</td>
+					</tr>
+					<tr align="center">
+						<td colspan="2">
+							<button class="w3-button w3-section w3-teal w3-ripple">Register</button>
+						</td>
 					</tr>
 
 				</table>
